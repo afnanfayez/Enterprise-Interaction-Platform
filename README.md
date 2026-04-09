@@ -20,6 +20,20 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Project conventions
+
+- Keep `app/*` focused on route composition (`page.tsx`, `layout.tsx`, and route handlers).
+- Keep feature logic grouped under `components/<feature>/`.
+- Keep reusable primitives under `components/ui/*`.
+- Use toast notifications for user feedback and keep inline validation messages for fields.
+
+## Localization architecture
+
+- Locale routes are URL-based: `/ar` and `/en`.
+- The selected language is remembered in the `adel-locale` cookie.
+- Shared localized copy lives in `lib/i18n.ts`.
+- Address form labels and country/city option rendering follow the active locale.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

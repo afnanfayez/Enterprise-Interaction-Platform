@@ -8,6 +8,13 @@ export interface DropdownOption {
   flag?: string;
 }
 
+export interface DropdownTexts {
+  searchPlaceholder: string;
+  searchAriaPrefix: string;
+  loadingText: string;
+  noResultsText: string;
+}
+
 interface DropdownProps {
   id: string;
   label: string;
@@ -15,6 +22,7 @@ interface DropdownProps {
   selected: DropdownOption | null;
   onSelect: (option: DropdownOption) => void;
   placeholder: string;
+  texts: DropdownTexts;
   disabled?: boolean;
   loading?: boolean;
   error?: string;
@@ -27,6 +35,7 @@ export default function Dropdown({
   selected,
   onSelect,
   placeholder,
+  texts,
   disabled = false,
   loading = false,
   error,
@@ -125,7 +134,7 @@ export default function Dropdown({
             </span>
           ) : (
             <span className="text-gray-400">
-              {loading ? 'جاري التحميل...' : placeholder}
+              {loading ? texts.loadingText : placeholder}
             </span>
           )}
 
@@ -164,10 +173,10 @@ export default function Dropdown({
               <input
                 ref={searchRef}
                 type="text"
-                placeholder="بحث..."
+                placeholder={texts.searchPlaceholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                aria-label={`بحث في ${label}`}
+                aria-label={`${texts.searchAriaPrefix} ${label}`}
                 className="flex-1 text-sm outline-none bg-transparent text-gray-800 placeholder-gray-400"
               />
             </div>
@@ -176,7 +185,7 @@ export default function Dropdown({
             <ul className="max-h-56 overflow-y-auto">
               {filtered.length === 0 ? (
                 <li className="px-4 py-4 text-sm text-gray-400 text-center">
-                  لا توجد نتائج
+                  {texts.noResultsText}
                 </li>
               ) : (
                 filtered.map((opt) => (

@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { Cairo } from 'next/font/google';
 import './globals.css';
-import ToasterProvider from '@/components/ui/ToasterProvider';
 
 export const metadata: Metadata = {
-  title: 'معلومات العنوان',
-  description: 'نموذج اختيار الدولة والمدينة',
+  title: 'Adel Project',
+  description: 'Bilingual country and city selection form',
 };
 
 const cairo = Cairo({
@@ -18,9 +17,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className={cairo.className}>
-        <ToasterProvider />
         {children}
       </body>
     </html>

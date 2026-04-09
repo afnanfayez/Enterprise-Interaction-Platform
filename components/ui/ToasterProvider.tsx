@@ -1,11 +1,16 @@
 'use client';
 
 import { Toaster } from 'sonner';
+import type { Direction } from '@/lib/i18n';
 
-export default function ToasterProvider() {
+interface ToasterProviderProps {
+  dir: Direction;
+}
+
+export default function ToasterProvider({ dir }: ToasterProviderProps) {
   return (
     <Toaster
-      dir="rtl"
+      dir={dir}
       position="top-center"
       richColors
       closeButton
