@@ -1,24 +1,10 @@
 import 'server-only';
 
-import { createRequire } from 'node:module';
+import { getCountries } from '@countrystatecity/countries';
 import { getCitiesArByCountry } from '@/lib/cities-ar';
 import { getCountryNameAr } from '@/lib/countries-i18n';
 import { getCurrencyNameAr } from '@/lib/currencies-ar';
 import type { City, Country } from '@/lib/location-types';
-
-interface CountryDatasetEntry {
-  iso2: string;
-  name: string;
-  currency?: string;
-  emoji?: string;
-}
-
-type CountriesLib = {
-  getCountries: () => Promise<CountryDatasetEntry[]>;
-};
-
-const require = createRequire(import.meta.url);
-const countriesLib = require('@countrystatecity/countries') as CountriesLib;
 
 const ARAB_COUNTRY_CODES = new Set([
   'AE',
@@ -53,7 +39,7 @@ const citiesCache = new Map<string, City[]>();
 export async function getArabCountries(): Promise<Country[]> {
   if (countriesCache) return countriesCache;
 
-  const countriesData = await countriesLib.getCountries();
+  const countriesData = await getCountries();
 
   const countries: Country[] = countriesData
     .filter((country) => ARAB_COUNTRY_CODES.has(country.iso2))
