@@ -7,7 +7,8 @@ export async function GET() {
   try {
     const countries = await getArabCountries();
     return NextResponse.json({ data: countries });
-  } catch {
+  } catch (err) {
+    console.error('Countries API Error:', err);
     return NextResponse.json(
       { error: 'Failed to load countries' },
       { status: 500 }

@@ -22,6 +22,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Invalid iso2 value' }, { status: 400 });
     }
 
+    console.error('Cities API Error:', error);
     return NextResponse.json({ error: 'Failed to load cities' }, { status: 500 });
   }
 }
