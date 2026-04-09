@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 import AddressFormView from './AddressFormView';
 import { useAddressForm } from './hooks/useAddressForm';
@@ -21,7 +22,7 @@ export default function AddressForm() {
     cancel,
   } = useAddressForm();
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     const result = submit();
 
     if (result.status === 'validation-error') {
@@ -39,7 +40,33 @@ export default function AddressForm() {
       .join(' • ');
 
     toast.success('تم الحفظ بنجاح!', { description });
-  };
+  }, [submit]);
+
+  useEffect(() => {
+    const onGlobalEnter = (event: KeyboardEvent) => {
+      if (
+        event.key !== 'Enter' ||
+        event.isComposing ||
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey
+      ) {
+        return;
+      }
+
+      const target = event.target;
+      if (target instanceof HTMLElement) {
+        if (target.id === 'cancel-btn') return;
+      }
+
+      event.preventDefault();
+      handleSubmit();
+    };
+
+    window.addEventListener('keydown', onGlobalEnter, true);
+    return () => window.removeEventListener('keydown', onGlobalEnter, true);
+  }, [handleSubmit]);
 
   return (
     <AddressFormView

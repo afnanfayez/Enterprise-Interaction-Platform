@@ -1,5 +1,6 @@
 'use client';
 
+import type { SyntheticEvent } from 'react';
 import type { Country } from '@/lib/api';
 import Dropdown, { type DropdownOption } from './Dropdown';
 import type { FieldErrors } from './hooks/useAddressForm';
@@ -35,9 +36,17 @@ export default function AddressFormView({
   onSubmit,
   onCancel,
 }: AddressFormViewProps) {
+  const handleFormSubmit = (event: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+    event.preventDefault();
+    onSubmit();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-100 flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl shadow-lg px-8 pt-8 pb-7 w-full max-w-[430px]">
+      <form
+        onSubmit={handleFormSubmit}
+        className="bg-white rounded-2xl shadow-lg px-8 pt-8 pb-7 w-full max-w-[430px]"
+      >
         <div className="text-center mb-7">
           <h1 className="text-[22px] font-bold text-gray-900 mb-1.5 tracking-tight">
             معلومات العنوان
@@ -100,8 +109,7 @@ export default function AddressFormView({
         <div className="flex items-center gap-3">
           <button
             id="submit-btn"
-            type="button"
-            onClick={onSubmit}
+            type="submit"
             className="flex-1 h-12 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white rounded-lg font-bold text-base transition-all duration-150 cursor-pointer"
           >
             التالي
@@ -115,7 +123,7 @@ export default function AddressFormView({
             إلغاء
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
