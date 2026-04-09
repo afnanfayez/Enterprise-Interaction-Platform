@@ -68,6 +68,16 @@ export default function Dropdown({
     setSearch('');
   };
 
+  const handleOptionKeyDown = (
+    event: React.KeyboardEvent<HTMLLIElement>,
+    option: DropdownOption
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSelect(option);
+    }
+  };
+
   const triggerBase =
     'w-full flex items-center justify-between px-4 py-3 rounded-lg border text-sm transition-all duration-150 outline-none min-h-[46px] font-[inherit]';
 
@@ -101,6 +111,7 @@ export default function Dropdown({
           className={`${triggerBase} ${triggerVariant}`}
           aria-haspopup="listbox"
           aria-expanded={open}
+          aria-describedby={error ? `${id}-error` : undefined}
         >
          
           {selected ? (
@@ -156,6 +167,7 @@ export default function Dropdown({
                 placeholder="بحث..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                aria-label={`بحث في ${label}`}
                 className="flex-1 text-sm outline-none bg-transparent text-gray-800 placeholder-gray-400"
               />
             </div>
@@ -173,6 +185,8 @@ export default function Dropdown({
                     role="option"
                     aria-selected={selected?.value === opt.value}
                     onClick={() => handleSelect(opt)}
+                    onKeyDown={(event) => handleOptionKeyDown(event, opt)}
+                    tabIndex={0}
                     className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm transition-colors duration-100 ${
                       selected?.value === opt.value
                         ? 'bg-blue-50 text-blue-700 font-semibold'
@@ -195,7 +209,9 @@ export default function Dropdown({
       </div>
 
       {error && (
-        <span className="block text-xs text-red-500 mt-1.5">{error}</span>
+        <span id={`${id}-error`} className="block text-xs text-red-500 mt-1.5">
+          {error}
+        </span>
       )}
     </div>
   );
