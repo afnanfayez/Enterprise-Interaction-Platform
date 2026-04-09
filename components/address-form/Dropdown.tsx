@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 export interface DropdownOption {
   value: string;
   label: string;
-  flagUrl?: string;
+  flag?: string;
 }
 
 interface DropdownProps {
@@ -105,13 +105,10 @@ export default function Dropdown({
          
           {selected ? (
             <span className="flex items-center gap-2 text-gray-900 font-medium">
-              {selected.flagUrl && (
-          
-                <img
-                  src={selected.flagUrl}
-                  alt=""
-                  className="w-6 h-[17px] object-cover rounded-sm shadow-sm flex-shrink-0"
-                />
+              {selected.flag && (
+                <span className="w-6 text-center leading-none flex-shrink-0">
+                  {selected.flag}
+                </span>
               )}
               <span>{selected.label}</span>
             </span>
@@ -184,13 +181,10 @@ export default function Dropdown({
                   >
                    
                     <span>{opt.label}</span>
-                    {opt.flagUrl && (
-                     
-                      <img
-                        src={opt.flagUrl}
-                        alt={opt.label}
-                        className="w-6 h-[17px] object-cover rounded-sm shadow-sm flex-shrink-0"
-                      />
+                    {opt.flag && (
+                      <span className="w-6 text-center leading-none flex-shrink-0">
+                        {opt.flag}
+                      </span>
                     )}
                   </li>
                 ))
