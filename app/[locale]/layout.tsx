@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import ToasterProvider from '@/components/ui/ToasterProvider';
 import DocumentLocaleSync from '@/components/ui/DocumentLocaleSync';
-import { getLocaleDirection, isLocale } from '@/lib/i18n';
+import NavigationWrapper from '@/components/ui/NavigationWrapper';
+import { AuthProvider } from '@/components/auth/AuthProvider';
+import { getLocaleDirection, getMessages, isLocale, type Locale } from '@/lib/i18n';
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -19,12 +21,18 @@ export default async function LocaleLayout({
   }
 
   const dir = getLocaleDirection(locale);
+  const messages = getMessages(locale as Locale);
 
   return (
     <>
       <DocumentLocaleSync locale={locale} />
       <ToasterProvider dir={dir} />
-      <div dir={dir}>{children}</div>
+      <AuthProvider>
+        <div dir={dir}>
+          <NavigationWrapper locale={locale as Locale} messages={messages} />
+          {children}
+        </div>
+      </AuthProvider>
     </>
   );
 }
