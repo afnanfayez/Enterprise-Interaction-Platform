@@ -60,7 +60,7 @@ export default function AddressFormView({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-100 flex items-center justify-center p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-brand-accent-light flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-[430px]">
         <AppHeader locale={locale} messages={messages.header} />
 
@@ -128,7 +128,7 @@ export default function AddressFormView({
             <button
               id="submit-btn"
               type="submit"
-              className="flex-1 h-12 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white rounded-lg font-bold text-base transition-all duration-150 cursor-pointer"
+              className="flex-1 h-12 bg-brand-accent hover:bg-brand-accent-dark active:scale-[0.98] text-white rounded-lg font-bold text-base transition-all duration-150 cursor-pointer"
             >
               {messages.form.submitButton}
             </button>
@@ -136,7 +136,7 @@ export default function AddressFormView({
               id="cancel-btn"
               type="button"
               onClick={onCancel}
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 font-medium text-sm rounded-lg px-4 py-2 transition-all duration-150 cursor-pointer flex-shrink-0"
+              className="text-brand-accent hover:text-brand-accent-dark hover:bg-brand-accent-light font-medium text-sm rounded-lg px-4 py-2 transition-all duration-150 cursor-pointer flex-shrink-0"
             >
               {messages.form.cancelButton}
             </button>

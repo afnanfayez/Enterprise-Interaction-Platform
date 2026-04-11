@@ -91,12 +91,12 @@ export default function Dropdown({
     'w-full flex items-center justify-between px-4 py-3 rounded-lg border text-sm transition-all duration-150 outline-none min-h-[46px] font-[inherit]';
 
   const triggerVariant = disabled
-    ? 'bg-gray-50 border-gray-200 cursor-not-allowed text-gray-400'
+    ? 'bg-gray-50 border-gray-200 cursor-not-allowed text-gray-400 dark:bg-dark-bg dark:border-dark-border dark:text-neutral-500'
     : open
-    ? 'border-blue-500 bg-white shadow-[0_0_0_3px_rgba(59,130,246,0.12)] cursor-pointer'
+    ? 'border-brand-accent bg-white shadow-focus-accent cursor-pointer dark:bg-dark-surface dark:text-neutral-100'
     : error
-    ? 'border-red-400 bg-white cursor-pointer'
-    : 'border-gray-300 bg-white hover:border-gray-400 cursor-pointer';
+    ? 'border-red-400 bg-white cursor-pointer dark:bg-dark-surface dark:text-neutral-100'
+    : 'border-neutral-300 bg-white hover:border-brand-accent cursor-pointer dark:border-dark-border dark:bg-dark-surface dark:hover:border-brand-accent dark:hover:bg-dark-surface-hover dark:text-neutral-100';
 
   return (
     <div className="mb-5">
@@ -104,7 +104,7 @@ export default function Dropdown({
       <label
         htmlFor={id}
         className={`block text-sm font-semibold mb-1.5 transition-colors ${
-          disabled ? 'text-gray-400' : 'text-gray-700'
+          disabled ? 'text-gray-400 dark:text-neutral-600' : 'text-gray-700 dark:text-neutral-300'
         }`}
       >
         {label} <span className="text-red-500">*</span>
@@ -124,7 +124,7 @@ export default function Dropdown({
         >
          
           {selected ? (
-            <span className="flex items-center gap-2 text-gray-900 font-medium">
+            <span className="flex items-center gap-2 text-gray-900 dark:text-neutral-100 font-medium">
               {selected.flag && (
                 <span className="w-6 text-center leading-none flex-shrink-0">
                   {selected.flag}
@@ -133,7 +133,7 @@ export default function Dropdown({
               <span>{selected.label}</span>
             </span>
           ) : (
-            <span className="text-gray-400">
+            <span className="text-gray-400 dark:text-neutral-500">
               {loading ? texts.loadingText : placeholder}
             </span>
           )}
@@ -156,10 +156,10 @@ export default function Dropdown({
         {open && (
           <div
             role="listbox"
-            className="absolute top-full mt-1 left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden animate-drop-in"
+            className="absolute top-full mt-1 left-0 right-0 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl shadow-xl z-50 overflow-hidden animate-drop-in"
           >
             
-            <div className="flex items-center gap-2 px-3 py-2.5 border-b border-gray-100 bg-gray-50/80">
+            <div className="flex items-center gap-2 px-3 py-2.5 border-b border-gray-100 dark:border-dark-border bg-gray-50/80 dark:bg-dark-bg">
               <svg
                 className="w-4 h-4 text-gray-400 flex-shrink-0"
                 viewBox="0 0 24 24"
@@ -177,14 +177,14 @@ export default function Dropdown({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 aria-label={`${texts.searchAriaPrefix} ${label}`}
-                className="flex-1 text-sm outline-none bg-transparent text-gray-800 placeholder-gray-400"
+                className="flex-1 text-sm outline-none bg-transparent text-gray-800 dark:text-neutral-200 placeholder-gray-400 dark:placeholder-neutral-500"
               />
             </div>
 
      
             <ul className="max-h-56 overflow-y-auto">
               {filtered.length === 0 ? (
-                <li className="px-4 py-4 text-sm text-gray-400 text-center">
+                <li className="px-4 py-4 text-sm text-gray-400 dark:text-neutral-500 text-center">
                   {texts.noResultsText}
                 </li>
               ) : (
@@ -198,8 +198,8 @@ export default function Dropdown({
                     tabIndex={0}
                     className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm transition-colors duration-100 ${
                       selected?.value === opt.value
-                        ? 'bg-blue-50 text-blue-700 font-semibold'
-                        : 'text-gray-700 hover:bg-gray-50'
+                        ? 'bg-brand-accent-light text-brand-accent font-semibold dark:bg-brand-accent/20 dark:text-brand-accent'
+                        : 'text-gray-700 hover:bg-gray-50 dark:text-neutral-300 dark:hover:bg-dark-surface-hover'
                     }`}
                   >
                    
