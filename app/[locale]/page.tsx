@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import AddressForm from '@/components/address-form/AddressForm';
+import LandingPage from '@/components/landing/LandingPage';
 import { LOCALES, isLocale } from '@/lib/i18n';
 
 interface LocalePageProps {
@@ -13,7 +13,7 @@ export default async function LocalePage({ params }: LocalePageProps) {
     notFound();
   }
 
-  return <AddressForm locale={locale} />;
+  return <LandingPage locale={locale} />;
 }
 
 export function generateStaticParams() {
