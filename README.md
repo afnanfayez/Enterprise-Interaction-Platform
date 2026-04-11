@@ -1,50 +1,176 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Adel MVP — Enterprise Interaction Platform
+
+## Overview
+
+B2C/B2B/B2G e-commerce and order management platform targeting the Arab market.
+Fully bilingual (Arabic RTL / English LTR) with JWT authentication, role-based access, and a multi-step order workflow.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | Next.js 16 (App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS 4 |
+| **Database** | PostgreSQL (Neon Serverless) |
+| **ORM** | Drizzle ORM |
+| **Auth** | JWT ([jose](https://github.com/panva/jose)) + httpOnly refresh cookies |
+| **Validation** | Zod v4 |
+| **Icons** | Lucide React |
+| **Toasts** | Sonner |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database ([Neon](https://neon.tech) recommended)
+
+### Installation
+
+```bash
+npm install
+cp .env.example .env
+# Fill in your database URL and JWT secrets in .env
+```
+
+### Database Setup
+
+```bash
+npx drizzle-kit push    # Push schema to database
+npm run db:seed          # Seed admin user (admin@adel.com / Admin123!)
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Build & Production
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Project conventions
+```
+app/
+├── [locale]/               # Locale-scoped pages (ar / en)
+│   ├── layout.tsx          # Root locale layout (providers, nav, toaster)
+│   ├── page.tsx            # Landing / home
+│   ├── login/              # Login page
+│   ├── register/           # Registration page
+│   ├── dashboard/          # User dashboard
+│   ├── orders/             # Order list, detail & creation pages
+│   │   ├── create/
+│   │   └── [id]/
+│   │       └── confirmation/
+│   ├── profile/            # User profile
+│   └── admin/              # Admin dashboard & order management
+│       └── orders/
+├── api/                    # API route handlers
+│   ├── auth/               # login · register · logout · refresh
+│   ├── orders/             # CRUD + status updates
+│   ├── profile/            # Profile read/update
+│   ├── countries/          # Country list
+│   ├── cities/             # City list
+│   └── locale/             # Locale switching
+components/
+├── auth/                   # AuthProvider, LoginForm, RegisterForm
+├── orders/                 # CreateOrderForm, OrdersList, OrderDetail, OrderConfirmation
+├── profile/                # ProfilePage & ProfileView
+├── admin/                  # AdminDashboard, AdminOrderDetail, AdminSidebar
+├── address-form/           # Country/city address selector
+├── dashboard/              # Dashboard widgets
+└── ui/                     # Reusable primitives (Button, Card, Input, Badge, etc.)
+lib/
+├── i18n.ts                 # AR/EN message dictionaries & locale helpers
+├── validators.ts           # Zod schemas for forms & API input
+├── api.ts                  # Client-side fetch helpers
+└── server/                 # Server-only code
+    ├── db.ts               # Drizzle + Neon connection
+    ├── schema.ts           # Database schema
+    ├── auth.ts             # JWT helpers (sign, verify, cookies)
+    └── orders.ts           # Order query/mutation helpers
+scripts/
+└── seed-admin.ts           # Seeds the default admin user
+```
+
+## Features
+
+- 🌐 **Bilingual AR/EN** with full RTL support
+- 🔐 **JWT authentication** with role-based access (user / admin)
+- 📦 **Multi-step order creation** with address, details, and review steps
+- 📋 **Order tracking** with status timeline history
+- 👤 **User profile management**
+- 🛡️ **Admin dashboard** with order management and status updates
+- 📱 **Responsive design** optimized for mobile and desktop
+- 🔔 **Toast notifications** (Sonner) for all key user actions
+
+## Project Conventions
 
 - Keep `app/*` focused on route composition (`page.tsx`, `layout.tsx`, and route handlers).
 - Keep feature logic grouped under `components/<feature>/`.
 - Keep reusable primitives under `components/ui/*`.
-- Use toast notifications for user feedback and keep inline validation messages for fields.
+- Use toast notifications (Sonner) for user feedback; keep inline validation for field errors.
 
-## Localization architecture
+## Localization
 
 - Locale routes are URL-based: `/ar` and `/en`.
-- The selected language is remembered in the `adel-locale` cookie.
-- Shared localized copy lives in `lib/i18n.ts`.
-- Address form labels and country/city option rendering follow the active locale.
+- The selected language is stored in the `adel-locale` cookie.
+- All UI copy lives in `lib/i18n.ts` as typed AR/EN message dictionaries.
 
-## Learn More
+## API Endpoints
 
-To learn more about Next.js, take a look at the following resources:
+### Auth
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Login, returns access + refresh tokens |
+| POST | `/api/auth/logout` | Clear refresh cookie |
+| POST | `/api/auth/refresh` | Refresh access token |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Orders
 
-## Deploy on Vercel
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/orders` | List orders (user's own or all for admin) |
+| POST | `/api/orders` | Create a new order |
+| GET | `/api/orders/[id]` | Get order detail |
+| POST | `/api/orders/[id]/status` | Update order status (admin) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Profile
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/profile` | Get current user profile |
+| PATCH | `/api/profile` | Update profile fields |
+
+### Location Data
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/countries` | List available countries |
+| GET | `/api/cities?country=XX` | List cities for a country |
+| POST | `/api/locale` | Switch locale preference |
+
+## Default Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@adel.com` | `Admin123!` |
+
+## Environment Variables
+
+See `.env.example` for the full list:
+
+```env
+DATABASE_URL=postgresql://...       # Neon PostgreSQL connection string
+JWT_ACCESS_SECRET=...               # Min 32 characters
+JWT_REFRESH_SECRET=...              # Min 32 characters
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
